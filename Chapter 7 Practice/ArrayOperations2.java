@@ -17,11 +17,28 @@ public class ArrayOperations2
     
     public void shiftRight()
     {
-        
-        for (int i = 0; i < values.length; i++)
+        /*
+         * for (int i = values.length; i > values.length; i--)
         {
             values[i] = values[values.length - i];
         }
+           
+         */
+        /*
+         * Schmit's Code:
+         * 
+         * life becomes easier when you iterate through things backwards
+         * 
+         * int last = arr.length - 1;
+         * int temp = arr.[last];
+         * 
+         * for (int i = last; i > 0; i--)
+         * {
+         *     arr[i] = arr[i -1]
+         *  }
+         *  arr[0] = temp;
+         */
+       
            
     }
     
@@ -38,7 +55,7 @@ public class ArrayOperations2
     
     public void replaceLargerNeighbor()
     {
-        for (i = 1; i > (values.length - 1); i++)
+        for (int i = 1; i > (values.length - 1); i++)
         {
             if (values[i-1] > values[i+1])
             {
@@ -46,22 +63,32 @@ public class ArrayOperations2
             }
             else
             {
-                values[i] = values[i+1]
+                values[i] = values[i+1];
             }
         }
+        
+        /*
+         * You can't walk through the array, because you will overwrite the thing you are trying 
+         * analyze.  You need to remember the value that you are about to overwrite.   
+         */
     }
     
     public void removeMiddle()
     {
-        
-        if (values.length % 2 == 0)
+        /*
+         * if (values.length % 2 == 0)
         {
             x = int[values.length-2];
-             
         }
         else
         {
             x int[values.length-1];
         }
+         */
+        
+        /*
+         * write two separate algorithms.
+         * Make new array with a length that is shorter.
+         */
     }
 }
