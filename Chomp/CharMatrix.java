@@ -98,16 +98,15 @@ public class CharMatrix
   // Returns the count of all non-space characters in row 
   public int countInRow(int row)
   {
-    int count;
-      for (int x = 0; x <= grid.length; x++)
+    int count = 0;
+    //rows = x
+    //cols = y
+      for (int x = 0; x < grid[row].length; x++)
     {
-        for (int y = 0; y <= col; y++)
-        {
-            if (grid[x][y] != ' ')
+        if (grid[row][x] != ' ')
             {
                 count++;
-            }
-        }
+            }        
     }
     return count;
   }
@@ -115,13 +114,13 @@ public class CharMatrix
   // Returns the count of all non-space characters in col 
   public int countInCol(int col)
   {
-    int count;
-      for (int x = 0; x <= grid.length; x++)
+    int count= 0;
+      for (int x = 0; x < grid.length; x++)
     {
-        for (int y = 0; y <= col; y++)
+        if (grid[x][col] != ' ')
         {
             count++;
-        }
+        }        
     }
     return count;
   }
