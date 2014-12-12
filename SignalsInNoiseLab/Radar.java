@@ -11,6 +11,9 @@ public class Radar
     // stores whether each cell triggered detection for the current scan of the radar
     private boolean[][] currentScan;
     
+    //create copy of the current arrray to compare to the next array
+    private boolean[][] prevScan;
+    
     // value of each cell is incremented for each scan in which that cell triggers detection 
     private int[][] accumulator;
     
@@ -23,6 +26,14 @@ public class Radar
     
     // number of scans of the radar since construction
     private int numScans;
+    
+    // maximum displacement x and y
+    private int maxX;
+    private int maxY;
+    
+    //displacement of the monster
+    private int dX;
+    private int dY;
 
     /**
      * Constructor for objects of class Radar
@@ -30,16 +41,23 @@ public class Radar
      * @param   rows    the number of rows in the radar grid
      * @param   cols    the number of columns in the radar grid
      */
-    public Radar(int rows, int cols)
+    public Radar(int rows, int cols, int startX, int startY, int mX, int mY, int dx, int dy)
     {
         // initialize instance variables
         currentScan = new boolean[rows][cols]; // elements will be set to false
-        accumulator = new int[rows][cols]; // elements will be set to 0
+        accumulator = new int[(mX*2)+1][(mY*2)+1]; // elements will be set to 0
         
-        // randomly set the location of the monster (can be explicity set through the
-        //  setMonsterLocation method
-        monsterLocationRow = (int)(Math.random() * rows);
-        monsterLocationCol = (int)(Math.random() * cols);
+        // randomly set the location of the monster (can be explicity set through the setMonsterLocation method)
+        monsterLocationRow = startX;
+        monsterLocationCol = startY;
+        
+        //set maximum x,y displacement
+        maxX = mX;
+        maxY = mY;
+        
+        //set displacements x,y
+        dX = dx;
+        dY = dy;
         
         noiseFraction = 0.05;
         numScans= 0;
@@ -51,17 +69,24 @@ public class Radar
      */
     public void scan()
     {
+        
         // zero the current scan grid
         for(int row = 0; row < currentScan.length; row++)
         {
             for(int col = 0; col < currentScan[0].length; col++)
             {
-                currentScan[row][col] = false;
+                if (currentScan[row][col] == true)
+                {
+                  prevScan[row][col] = true;
+                  currentScan[row][col] = false;  
+                }
+                
             }
         }
         
-        // detect the monster
-        currentScan[monsterLocationRow][monsterLocationCol] = true;
+        // move the monster
+        monsterLocationRow = monsterLocationRow + dX;
+        monsterLocationCol = monsterLocationCol + dY;
         
         // inject noise into the grid
         injectNoise();
@@ -71,9 +96,16 @@ public class Radar
         {
             for(int col = 0; col < currentScan[0].length; col++)
             {
-                if(currentScan[row][col] == true)
+                //check if cell is true
+                for (int prevRow = 0; row < prevScan.length; prevRow++)
                 {
-                   accumulator[row][col]++;
+                    for (int prevCol = 0; col < prevScan.length; prevCol++)
+                    {
+                        //check is current cell is true
+                        int currentDisplacementX = currentScan[row] - prevScan[prevRow];
+                        int currentDisplacementY = currentScan[col] - prevScan[prevCol];
+                        accumulator[currentDisplacement][currentDisplacementY]++;
+                    }
                 }
             }
         }

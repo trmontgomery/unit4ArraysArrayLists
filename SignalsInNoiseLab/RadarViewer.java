@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import java.util.Scanner;
 
 /**
  * Class that contains the main method for the program and creates the frame containing the component.
@@ -14,10 +15,22 @@ public class RadarViewer
      */
     public static void main(String[] args) throws InterruptedException
     {
+        //ask user to input starting x,y postion and the maximum displacement x,y for the monster
+        Scanner in = new Scanner(System.in);
+        
+        System.out.println("Enter starting row: ");
+            int startRow = in.nextInt();
+        System.out.println("Enter starting column: ");
+            int startCol = in.nextInt();
+        System.out.println("Enter maximum horizontal displacement (x): ");
+            int maxX = in.nextInt();
+        System.out.println("Enter maximum vertical displacement (y): ");
+            int maxY = in.nextInt();
+            
         // create the radar, set the monster location, and perform the initial scan
         final int ROWS = 100;
         final int COLS = 100;
-        Radar radar = new Radar(ROWS, COLS);
+        Radar radar = new Radar(ROWS, COLS, startRow, startCol, maxX, maxY);
         radar.setNoiseFraction(0.10);
         radar.scan();
         
@@ -44,7 +57,6 @@ public class RadarViewer
             Thread.sleep(100); // sleep 100 milliseconds (1/10 second)
             
             radar.scan();
-            
             frame.repaint();
         }
     }
