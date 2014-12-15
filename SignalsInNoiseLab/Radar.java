@@ -45,6 +45,7 @@ public class Radar
     {
         // initialize instance variables
         currentScan = new boolean[rows][cols]; // elements will be set to false
+        prevScan = new boolean[rows][cols];
         accumulator = new int[(mX*2)+1][(mY*2)+1]; // elements will be set to 0
         
         // randomly set the location of the monster (can be explicity set through the setMonsterLocation method)
@@ -80,7 +81,6 @@ public class Radar
                   prevScan[row][col] = true;
                   currentScan[row][col] = false;  
                 }
-                
             }
         }
         
@@ -96,15 +96,19 @@ public class Radar
         {
             for(int col = 0; col < currentScan[0].length; col++)
             {
-                //check if cell is true
-                for (int prevRow = 0; row < prevScan.length; prevRow++)
+                if (currentScan[row][col] == true)
                 {
-                    for (int prevCol = 0; col < prevScan.length; prevCol++)
+                    for (int prevRow = 0; row < prevScan.length; prevRow++)
                     {
-                        //check is current cell is true
-                        int currentDisplacementX = currentScan[row] - prevScan[prevRow];
-                        int currentDisplacementY = currentScan[col] - prevScan[prevCol];
-                        accumulator[currentDisplacement][currentDisplacementY]++;
+                        for (int prevCol = 0; col < prevScan.length; prevCol++)
+                        {
+                            if (prevScan[prevRow][prevCol] == true)
+                            {
+                                int currentDisplacementX = row - prevRow;
+                                int currentDisplacementY = col - prevCol;
+                                accumulator[currentDisplacementX + maxX][currentDisplacementY + maxY]++;
+                            }
+                        }
                     }
                 }
             }
@@ -112,6 +116,30 @@ public class Radar
         
         // keep track of the total number of scans
         numScans++;
+    }
+    
+    /**
+     * Goes through the accumulator and finds the "cell" with the greatest value and prints the displacment of x and y
+     */
+    public void findVelocity()
+    {
+        int maxVal = accumulator[0][0];
+        
+        for (int row = 0; row < accumulator.length; row++)
+        {
+            for (int col = 0; col < accumulator[0].length; col++)
+            {
+                if (accumulator[row][col] > maxVal)
+                {
+                    maxVal = accumulator[row][col];
+                    dX = row;
+                    dY = col;
+                }
+            }
+        }
+        
+        System.out.println("dx of monster: "+ dX);
+        System.out.println("dy of monster: "+ dY);
     }
 
     /**

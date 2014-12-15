@@ -26,11 +26,15 @@ public class RadarViewer
             int maxX = in.nextInt();
         System.out.println("Enter maximum vertical displacement (y): ");
             int maxY = in.nextInt();
+        System.out.println("Enter horizontal displacement (x): ");
+            int dx = in.nextInt();
+        System.out.println("Enter vertical displacement (y): ");
+            int dy = in.nextInt();
             
         // create the radar, set the monster location, and perform the initial scan
         final int ROWS = 100;
         final int COLS = 100;
-        Radar radar = new Radar(ROWS, COLS, startRow, startCol, maxX, maxY);
+        Radar radar = new Radar(ROWS, COLS, startRow, startCol, maxX, maxY, dx, dy);
         radar.setNoiseFraction(0.10);
         radar.scan();
         
@@ -52,13 +56,14 @@ public class RadarViewer
         
         // perform 100 scans of the radar wiht a slight pause between each
         // after each scan, instruct the Java Run-Time to redraw the window
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 20; i++)
         {
             Thread.sleep(100); // sleep 100 milliseconds (1/10 second)
             
             radar.scan();
             frame.repaint();
         }
+        radar.findVelocity();
     }
 
 }
