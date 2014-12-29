@@ -2,8 +2,8 @@
 /**
  * The model for radar scan and accumulator
  * 
- * @author @gcschmit
- * @version 19 July 2014
+ * @author Tiffany Montgomery
+ * @version December 28, 2014
  */
 public class Radar
 {
@@ -119,9 +119,11 @@ public class Radar
     }
     
     /**
-     * Goes through the accumulator and finds the "cell" with the greatest value and prints the displacment of x and y
+     * Return an array with the horizontal and vertical displacements
+     * 
+     * @return an array with the horizontal and vertical displacements
      */
-    public void findVelocity()
+    public int[] findVelocity()
     {
         int maxVal = accumulator[0][0];
         
@@ -140,6 +142,9 @@ public class Radar
         
         System.out.println("dx of monster: "+ dX);
         System.out.println("dy of monster: "+ dY);
+        
+        int [] velocity = {dX,dY};
+        return velocity;
     }
 
     /**
